@@ -65,10 +65,13 @@ function Hero({ onContact }) {
           <p className="hero-text reveal delay-two">Glam Hub is an events management and business development company creating experiences, connections and solutions that help businesses and communities grow.</p>
           <div className="hero-actions reveal delay-three"><button className="button button-coral" onClick={onContact}>Work With Glam Hub <ArrowUpRight size={17} /></button><a className="text-link" href="#our-divisions">Explore our services <MoveUpRight size={16} /></a></div>
         </div>
-        <div className="hero-side reveal delay-two">
-          <div className="hero-stamp"><span>GH</span><small>EST. 2025</small></div>
-          <p>Building an ecosystem<br />for what's next.</p>
-        </div>
+        <aside className="hero-side hero-business-card reveal delay-two">
+          <div className="business-card-heading"><span>GLAM HUB / PROFILE</span><span className="status-pill">ACTIVE</span></div>
+          <div className="business-card-title"><strong>Business ecosystem</strong><span>for people, brands and ideas.</span></div>
+          <div className="business-card-rule" />
+          <div className="business-metrics"><div><strong>04</strong><span>divisions</span></div><div><strong>01</strong><span>connected hub</span></div><div><strong>2025</strong><span>established</span></div></div>
+          <div className="business-card-footer"><span>ATLANTIS / WC</span><span>01 — 04</span></div>
+        </aside>
         <div className="hero-scroll"><span>Scroll to explore</span><div className="scroll-line" /></div>
       </div>
       <div className="hero-bottom container-wide"><span>ATLANTIS, WESTERN CAPE</span><span>33°34' S &nbsp; 18°25' E</span></div>
