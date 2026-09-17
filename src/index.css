@@ -1,10 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
 @import "tailwindcss";
 
 @theme {
   --color-glam-plum: #36103D;
   --color-glam-plum-dark: #1F0824;
-  --color-glam-plum-light: #5A2366;
   --color-glam-cream: #FDFBF7;
   --color-glam-gold: #E5C07B;
   --color-glam-gold-dark: #CFA252;
