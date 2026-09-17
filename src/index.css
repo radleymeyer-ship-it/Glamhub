@@ -2,8 +2,9 @@
 @import "tailwindcss";
 
 @theme {
-  --color-glam-plum: #36103D;
-  --color-glam-plum-dark: #1F0824;
+  --color-glam-black: #000000;
+  --color-glam-dark: #0A0A0A;
+  --color-glam-plum-subtle: #280C2E;
   --color-glam-cream: #FDFBF7;
   --color-glam-gold: #E5C07B;
   --color-glam-gold-dark: #CFA252;
@@ -13,13 +14,45 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
   body {
-    background-color: var(--color-glam-plum-dark);
-    color: var(--color-glam-cream);
+    background-color: #000000;
+    color: #FDFBF7;
     font-family: var(--font-sans-corporate);
   }
 
   h1, h2, h3, h4 {
     font-family: var(--font-serif-display);
   }
+}
+
+/* Custom Keyframe Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-float {
+  animation: floatSlow 5s ease-in-out infinite;
 }
