@@ -66,7 +66,7 @@ function Hero({ onContact }) {
           <div className="hero-actions reveal delay-three"><button className="button button-coral" onClick={onContact}>Work With Glam Hub <ArrowUpRight size={17} /></button><a className="text-link" href="#our-divisions">Explore our services <MoveUpRight size={16} /></a></div>
         </div>
         <div className="hero-side reveal delay-two">
-          <div className="hero-stamp"><span>GH</span><small>EST. 2020</small></div>
+          <div className="hero-stamp"><span>GH</span><small>EST. 2025</small></div>
           <p>Building an ecosystem<br />for what's next.</p>
         </div>
         <div className="hero-scroll"><span>Scroll to explore</span><div className="scroll-line" /></div>
