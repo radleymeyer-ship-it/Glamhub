@@ -75,17 +75,27 @@ function App() {
         <Route
           path="*"
           element={
-            <div className="min-h-screen bg-black text-[#FDFBF7] font-sans antialiased selection:bg-[#E5C07B] selection:text-black">
+            <div className="relative bg-black font-sans antialiased text-[#FDFBF7] selection:bg-[#E5C07B] selection:text-black">
+              {/* Sticky Top Navbar */}
               <Navbar menuOpen={menuOpen} setMenuOpen={setMenuOpen} onContact={openContact} />
-              <main>
-                <Hero onContact={openContact} />
-                <ValueBanner />
-                <ServicesSection onContact={openContact} />
-                <BoutiqueFeature onContact={openContact} />
-                <TestimonialsSection />
-                <ContactSection onContact={openContact} />
+
+              <main className="relative">
+                {/* 1. STICKY HERO (Locked behind scrolling content) */}
+                <div className="sticky-hero flex flex-col justify-center">
+                  <Hero onContact={openContact} />
+                </div>
+
+                {/* 2. CURTAIN CONTENT (Slides up over Hero on scroll) */}
+                <div className="curtain-content shadow-[0_-25px_50px_rgba(0,0,0,0.8)] border-t border-[#E5C07B]/30">
+                  <ValueBanner />
+                  <ServicesSection onContact={openContact} />
+                  <BoutiqueFeature onContact={openContact} />
+                  <TestimonialsSection />
+                  <ContactSection onContact={openContact} />
+                  <Footer />
+                </div>
               </main>
-              <Footer />
+
               {modalOpen && <ContactModal onClose={() => setModalOpen(false)} />}
             </div>
           }
@@ -131,11 +141,11 @@ function Navbar({ menuOpen, setMenuOpen, onContact }) {
 function Hero({ onContact }) {
   return (
     <section className="relative overflow-hidden py-24 lg:py-32 bg-gradient-to-b from-black via-[#0A0A0A] to-black" id="top">
-      {/* Background radial glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#280C2E]/30 rounded-full blur-3xl pointer-events-none" />
+      {/* Background Radial Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#280C2E]/40 rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8 text-center space-y-8 animate-fade-in-up">
-        <div className="inline-flex items-center gap-2 rounded-full border border-[#E5C07B]/40 bg-[#280C2E]/50 px-4 py-1.5 text-xs font-semibold text-[#E5C07B] transition-transform hover:scale-105">
+        <div className="inline-flex items-center gap-2 rounded-full border border-[#E5C07B]/40 bg-[#280C2E]/60 px-4 py-1.5 text-xs font-semibold text-[#E5C07B] transition-transform hover:scale-105">
           <Sparkles size={14} className="animate-pulse" /> Boutique Events &amp; Team Experiences
         </div>
         
@@ -164,7 +174,7 @@ function Hero({ onContact }) {
 function ValueBanner() {
   const points = ['Improve Collaboration', 'Spark Productivity', 'Strengthen Culture', 'Elevate Morale']
   return (
-    <div className="border-y border-white/10 bg-[#0A0A0A] py-6">
+    <div className="border-b border-white/10 bg-[#0A0A0A] py-6">
       <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-around gap-6 px-6 text-sm font-semibold text-[#E5C07B]">
         {points.map((pt) => (
           <div key={pt} className="flex items-center gap-2 transition-transform hover:scale-105">
@@ -188,7 +198,7 @@ function ServicesSection({ onContact }) {
           </h2>
         </div>
 
-        {/* 3 Cheers Style Cream Cards with Black Text and Hover Animations */}
+        {/* Cream Cards with Dark Text */}
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           {services.map((item) => {
             const IconComponent = item.icon

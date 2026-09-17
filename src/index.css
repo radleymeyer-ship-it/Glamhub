@@ -28,7 +28,24 @@
   }
 }
 
-/* Custom Keyframe Animations */
+/* Curtain Scroll Effect Utilities */
+@layer utilities {
+  .sticky-hero {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    min-height: 100vh;
+  }
+
+  .curtain-content {
+    position: relative;
+    z-index: 20;
+    background-color: #000000;
+    color: #FDFBF7;
+  }
+}
+
+/* Keyframe Animations */
 @keyframes fadeInUp {
   from {
     opacity: 0;
