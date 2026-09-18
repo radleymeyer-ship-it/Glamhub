@@ -11,13 +11,29 @@ import {
   X,
 } from 'lucide-react'
 import logoUrl from '../glamhublogo.jpeg'
+import dtfPrintImg from '../image_083804.jpg'
+import printerOperatorImg from '../image_08387b.jpg'
+import tshirtsImg from '../image_083f46.jpg'
 import ProjectsPage from './ProjectsPage.jsx'
 
 const WHATSAPP_URL = 'https://wa.me/message/3AYEEDG6LF4RF1'
 const EVENT_HALL_IMAGE = 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&q=80'
 
-// Updated Merch/Branding image to custom t-shirt printing & branding
-const MERCH_IMAGE = 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=1200&q=80'
+// Branding & Printing slider images
+const BRANDING_SLIDER_IMAGES = [
+  {
+    url: dtfPrintImg,
+    alt: 'DTF Printing and Heat Transfer Film Designs',
+  },
+  {
+    url: printerOperatorImg,
+    alt: 'Commercial Large Format & Sticker Printing',
+  },
+  {
+    url: tshirtsImg,
+    alt: 'Custom T-Shirt Apparel & Apparel Branding',
+  },
+]
 
 // Event slider images for the Hero banner
 const HERO_SLIDER_IMAGES = [
@@ -358,6 +374,23 @@ function DivisionsSection({ onContact }) {
 }
 
 function MerchSection({ onContact }) {
+  const [currentSlide, setCurrentSlide] = useState(0)
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % BRANDING_SLIDER_IMAGES.length)
+    }, 4000)
+    return () => clearInterval(timer)
+  }, [])
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev === 0 ? BRANDING_SLIDER_IMAGES.length - 1 : prev - 1))
+  }
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % BRANDING_SLIDER_IMAGES.length)
+  }
+
   return (
     <section className="py-16 px-6 max-w-3xl mx-auto space-y-6 border-t border-black/5" id="branding">
       <div className="text-xs font-bold tracking-widest text-[#CFA252] uppercase">GLAMHUBSTUDIO</div>
@@ -371,8 +404,48 @@ function MerchSection({ onContact }) {
         Request a Quote &rarr;
       </button>
 
-      <div className="pt-4 overflow-hidden rounded-2xl border border-black/10 shadow-sm">
-        <img src={MERCH_IMAGE} alt="T-shirt screen printing and apparel branding" className="w-full h-64 object-cover" />
+      {/* Branding & Printing Image Slider */}
+      <div className="relative pt-4">
+        <div className="relative h-64 sm:h-80 w-full overflow-hidden rounded-2xl border border-black/10 shadow-md bg-black/5">
+          {BRANDING_SLIDER_IMAGES.map((image, index) => (
+            <img
+              key={index}
+              src={image.url}
+              alt={image.alt}
+              className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-in-out ${
+                index === currentSlide ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
+              }`}
+            />
+          ))}
+
+          <button
+            onClick={prevSlide}
+            aria-label="Previous printing sample"
+            className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white backdrop-blur-sm transition-all hover:bg-black/80"
+          >
+            <ChevronLeft size={20} />
+          </button>
+          <button
+            onClick={nextSlide}
+            aria-label="Next printing sample"
+            className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white backdrop-blur-sm transition-all hover:bg-black/80"
+          >
+            <ChevronRight size={20} />
+          </button>
+
+          <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-1.5">
+            {BRANDING_SLIDER_IMAGES.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentSlide(index)}
+                aria-label={`Go to printing slide ${index + 1}`}
+                className={`h-2 rounded-full transition-all ${
+                  index === currentSlide ? 'w-6 bg-[#CFA252]' : 'w-2 bg-white/70'
+                }`}
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   )
