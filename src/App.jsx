@@ -2,12 +2,12 @@ import { useState } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import {
   ArrowUpRight,
-  CheckCircle,
   Facebook,
   Instagram,
   Mail,
   Menu,
   MessageCircle,
+  Phone,
   Sparkles,
   Twitter,
   X,
@@ -16,28 +16,30 @@ import logoUrl from '../glamhublogo.jpeg'
 import ProjectsPage from './ProjectsPage.jsx'
 
 const WHATSAPP_URL = 'https://wa.me/message/3AYEEDG6LF4RF1'
-const EVENT_IMAGE_URL = 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&q=80'
+const EVENT_HALL_IMAGE = 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&q=80'
+const NETWORKING_IMAGE = 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1200&q=80'
+const MERCH_IMAGE = 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=1200&q=80'
 
 const services = [
   {
-    title: 'Events Management',
-    description: 'Curated experiences, corporate activations, and high-impact gatherings designed to connect communities and drive engagement.',
-    tag: 'Core Division',
+    num: '01',
+    title: 'Events',
+    description: 'Creating professional and meaningful experiences that connect people, businesses and communities.',
   },
   {
+    num: '02',
     title: 'Business Support',
-    description: 'Strategic consulting and operational support tailored to help entrepreneurs, businesses, and organizations grow efficiently.',
-    tag: 'Development',
+    description: 'Providing practical support to entrepreneurs and organisations looking to build visibility and growth.',
   },
   {
+    num: '03',
     title: 'Branding & Marketing',
-    description: 'Identity design, brand strategy, and creative campaigns built to position your brand for sustainable long-term success.',
-    tag: 'GlamHubStudio',
+    description: 'Custom apparel, DTF printing, signage, promotional materials, and business stationery.',
   },
   {
+    num: '04',
     title: 'Tech & Innovation',
-    description: 'Modern digital solutions and innovative platforms built to empower businesses and elevate community impact.',
-    tag: 'Solutions',
+    description: 'Digital solutions, platforms, and automated workflow tools built to empower business operations.',
   },
 ]
 
@@ -54,32 +56,42 @@ function App() {
         <Route
           path="*"
           element={
-            <div className="relative min-h-screen bg-[#FDFBF7] font-sans antialiased text-[#0A0A0A] selection:bg-[#E5C07B] selection:text-black">
-              {/* Top Navbar */}
+            <div className="relative bg-[#1A0B22] font-sans antialiased text-[#0A0A0A] selection:bg-[#E5C07B] selection:text-black">
+              {/* Sticky Top Navbar */}
               <Navbar menuOpen={menuOpen} setMenuOpen={setMenuOpen} onContact={openContact} />
 
-              <main>
-                {/* Hero Section */}
-                <Hero onContact={openContact} />
+              <main className="relative">
+                {/* 1. STICKY DARK HERO (Pinned background canvas) */}
+                <div className="sticky top-0 z-0 flex flex-col justify-center min-h-screen bg-[#1A0B22] text-white">
+                  <Hero onContact={openContact} />
+                </div>
 
-                {/* Value / Bullet Banner */}
-                <ValueBanner />
+                {/* 2. OVERLAPPING CREAM CURTAIN SECTION */}
+                <div className="relative z-10 shadow-[0_-30px_60px_rgba(0,0,0,0.4)] rounded-t-[2.5rem] bg-[#FAF8F5] text-[#1A0B22]">
+                  <AboutOverviewSection />
+                  <AboutStorySection />
+                  <DivisionsSection onContact={openContact} />
+                  <MerchSection onContact={openContact} />
+                  <ServicesListSection onContact={openContact} />
+                </div>
 
-                {/* Overview / About */}
-                <OverviewSection />
-
-                {/* Services Section */}
-                <ServicesSection onContact={openContact} />
-
-                {/* Featured Events Showcase Section */}
-                <EventsShowcaseSection />
-
-                {/* Contact CTA Section */}
-                <ContactSection onContact={openContact} />
-
-                {/* Footer */}
-                <Footer />
+                {/* 3. OVERLAPPING DARK EVENTS SECTION */}
+                <div className="relative z-20 shadow-[0_-30px_60px_rgba(0,0,0,0.5)] bg-[#1A0B22] text-white py-20 border-t border-white/10">
+                  <EventsSection />
+                  <Footer />
+                </div>
               </main>
+
+              {/* Floating WhatsApp Pill CTA */}
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="fixed bottom-6 right-6 z-40 flex items-center gap-2 rounded-full bg-[#5E1A6E] px-5 py-3 text-sm font-bold text-white shadow-2xl transition-all hover:bg-[#7A238E] hover:scale-105"
+              >
+                <MessageCircle size={18} />
+                <span>WhatsApp</span>
+              </a>
 
               {modalOpen && <ContactModal onClose={() => setModalOpen(false)} />}
             </div>
@@ -92,93 +104,63 @@ function App() {
 
 function Navbar({ menuOpen, setMenuOpen, onContact }) {
   const menuItems = [
-    { label: 'SERVICES', href: '#services', isExternal: false },
-    { label: 'ABOUT', href: '#about', isExternal: false },
-    { label: 'EVENTS', href: '#events', isExternal: false },
-    { label: 'CONTACT', href: WHATSAPP_URL, isExternal: true },
-    { label: 'SAY HI', href: WHATSAPP_URL, isExternal: true },
+    { label: 'Home', href: '#top' },
+    { label: 'About', href: '#about' },
+    { label: 'Our Divisions', href: '#divisions' },
+    { label: 'Events', href: '#events' },
+    { label: 'Business Support', href: '#divisions' },
+    { label: 'GlamHubStudio', href: '#branding' },
+    { label: 'Tech & Innovation', href: '#divisions' },
+    { label: 'Projects', href: '/projects' },
+    { label: 'Contact', href: WHATSAPP_URL, isExternal: true },
   ]
-
-  const handleLinkClick = (item) => {
-    setMenuOpen(false)
-    if (item.isExternal) {
-      window.open(item.href, '_blank', 'noopener,noreferrer')
-    }
-  }
 
   return (
     <>
-      <header className="sticky top-0 z-50 w-full border-b border-black/10 bg-[#FDFBF7]/90 backdrop-blur-md">
-        <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
-          <a className="flex items-center gap-3 transition-transform hover:scale-105" href="#top">
-            <img className="h-10 w-auto rounded object-cover border border-[#CFA252]/40" src={logoUrl} alt="Glam Hub Logo" />
-            <span className="text-xl font-bold tracking-tight text-[#0A0A0A] font-serif">GLAM HUB</span>
+      <header className="sticky top-0 z-50 w-full bg-[#FAF8F5]/90 backdrop-blur-md border-b border-black/5">
+        <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+          <a className="flex items-center gap-3" href="#top">
+            <span className="text-2xl font-serif font-bold text-[#2E0B3B]">Glam Hub</span>
           </a>
 
-          {/* Desktop Links */}
-          <div className="hidden md:flex md:items-center md:gap-8">
-            <a href="#services" className="text-sm font-medium text-[#0A0A0A]/80 hover:text-[#CFA252] transition">Services</a>
-            <a href="#about" className="text-sm font-medium text-[#0A0A0A]/80 hover:text-[#CFA252] transition">About</a>
-            <a href="#events" className="text-sm font-medium text-[#0A0A0A]/80 hover:text-[#CFA252] transition">Events</a>
-            <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-[#0A0A0A]/80 hover:text-[#CFA252] transition">Contact</a>
-            <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-[#0A0A0A]/80 hover:text-[#CFA252] transition">Say Hi</a>
-            <button className="flex items-center justify-center gap-2 rounded-full bg-[#0A0A0A] px-6 py-2.5 text-sm font-bold text-[#FDFBF7] transition-all hover:bg-[#CFA252] hover:text-black" onClick={onContact}>
-              Work With Glam Hub <ArrowUpRight size={16} />
-            </button>
-          </div>
-
-          {/* Mobile Hamburger Trigger */}
-          <button className="text-[#0A0A0A] hover:text-[#CFA252] md:hidden p-2" onClick={() => setMenuOpen(true)}>
-            <Menu size={28} />
+          <button className="rounded-full p-2 text-[#2E0B3B] hover:bg-black/5" onClick={() => setMenuOpen(true)}>
+            <Menu size={26} />
           </button>
         </nav>
       </header>
 
       {/* Full-Screen Overlay Mobile Menu */}
       {menuOpen && (
-        <div className="fixed inset-0 z-[100] flex flex-col justify-between bg-[#FDFBF7] px-8 py-10 text-[#0A0A0A]">
-          <div className="flex items-center justify-between">
-            <button className="p-2 text-[#0A0A0A] hover:text-[#CFA252] transition" onClick={() => setMenuOpen(false)}>
-              <X size={32} />
+        <div className="fixed inset-0 z-[100] flex flex-col justify-between bg-[#FAF8F5] px-8 py-8 text-[#1A0B22]">
+          <div className="flex items-center justify-between border-b border-black/5 pb-4">
+            <span className="text-2xl font-serif font-bold text-[#2E0B3B]">Glam Hub</span>
+            <button className="rounded-full border border-black/10 p-2 text-black hover:bg-black/5" onClick={() => setMenuOpen(false)}>
+              <X size={24} />
             </button>
-
-            <a href="#top" onClick={() => setMenuOpen(false)}>
-              <img className="h-12 w-auto rounded border border-[#CFA252]/40" src={logoUrl} alt="Glam Hub Logo" />
-            </a>
-
-            <div className="flex flex-col gap-3 text-[#280C2E]">
-              <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="hover:scale-110 transition-transform"><Mail size={20} /></a>
-              <a href="#" className="hover:scale-110 transition-transform"><Instagram size={20} /></a>
-              <a href="#" className="hover:scale-110 transition-transform"><Twitter size={20} /></a>
-              <a href="#" className="hover:scale-110 transition-transform"><Facebook size={20} /></a>
-            </div>
           </div>
 
-          <div className="flex flex-col items-center justify-center gap-8 py-12 text-center">
+          <div className="flex flex-col gap-4 py-6 overflow-y-auto">
             {menuItems.map((item) => (
               <a
                 key={item.label}
-                href={item.isExternal ? undefined : item.href}
-                onClick={(e) => {
-                  if (item.isExternal) e.preventDefault();
-                  handleLinkClick(item);
-                }}
-                className="text-3xl sm:text-4xl font-extrabold tracking-wider text-[#0A0A0A] hover:text-[#CFA252] transition-transform hover:scale-105 font-serif cursor-pointer"
+                href={item.href}
+                onClick={() => setMenuOpen(false)}
+                className="text-lg font-medium text-[#1A0B22]/90 hover:text-[#CFA252] transition-colors"
               >
                 {item.label}
               </a>
             ))}
           </div>
 
-          <div className="text-center pb-4">
+          <div className="pt-4">
             <button
-              className="rounded-full bg-[#0A0A0A] px-8 py-3.5 text-base font-bold text-[#FDFBF7] transition-all hover:bg-[#CFA252] hover:text-black"
+              className="w-full rounded-full bg-[#5E1A6E] py-4 text-center text-sm font-bold text-white hover:bg-[#7A238E] transition-all"
               onClick={() => {
                 setMenuOpen(false)
                 window.open(WHATSAPP_URL, '_blank', 'noopener,noreferrer')
               }}
             >
-              CHAT ON WHATSAPP
+              Chat on WhatsApp
             </button>
           </div>
         </div>
@@ -189,185 +171,196 @@ function Navbar({ menuOpen, setMenuOpen, onContact }) {
 
 function Hero({ onContact }) {
   return (
-    <section className="relative overflow-hidden py-24 lg:py-32 bg-[#FDFBF7]" id="top">
-      {/* Background Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#E5C07B]/20 rounded-full blur-3xl pointer-events-none" />
+    <section className="relative px-6 py-16 text-center space-y-8 max-w-2xl mx-auto" id="top">
+      <div className="text-xs font-semibold tracking-widest text-[#E5C07B] uppercase">
+        EVENTS · BUSINESS · BRANDING · TECH
+      </div>
 
-      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8 text-center space-y-8">
-        <div className="inline-flex items-center gap-2 rounded-full border border-[#CFA252]/40 bg-[#280C2E]/10 px-4 py-1.5 text-xs font-semibold text-[#280C2E] transition-transform hover:scale-105">
-          <Sparkles size={14} className="animate-pulse text-[#CFA252]" /> EVENTS · BUSINESS · BRANDING · TECH
+      <h1 className="text-4xl sm:text-6xl font-serif font-bold leading-tight">
+        Where People, Business &amp; <br />
+        <span className="italic text-[#E5C07B]">Ideas Connect.</span>
+      </h1>
+
+      <p className="text-base sm:text-lg text-white/80 leading-relaxed font-normal">
+        Glam Hub is an events management and business development company creating experiences, connections and solutions that help businesses and communities grow.
+      </p>
+
+      <div className="flex flex-col gap-3 pt-4 sm:flex-row sm:justify-center">
+        <button
+          onClick={onContact}
+          className="inline-flex items-center justify-center gap-2 rounded-full bg-[#E5C07B] px-8 py-4 text-base font-bold text-black transition-all hover:bg-white"
+        >
+          Work With Glam Hub <ArrowUpRight size={18} />
+        </button>
+        <a
+          href="#divisions"
+          className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/5 px-8 py-4 text-base font-semibold text-white hover:bg-white/10"
+        >
+          Explore Our Services
+        </a>
+      </div>
+
+      <div className="pt-8 overflow-hidden rounded-2xl border border-white/10">
+        <img src={NETWORKING_IMAGE} alt="Networking Event" className="w-full h-64 sm:h-80 object-cover" />
+      </div>
+    </section>
+  )
+}
+
+function AboutOverviewSection() {
+  return (
+    <section className="py-16 px-6 max-w-3xl mx-auto space-y-8" id="about">
+      <div className="space-y-6">
+        <div>
+          <div className="text-xs font-bold tracking-widest text-[#5E1A6E] uppercase">WHAT WE ARE</div>
+          <p className="text-base text-[#1A0B22]/80 mt-1">An events management &amp; business development company.</p>
         </div>
-        
-        <h1 className="mx-auto max-w-4xl text-5xl font-bold tracking-tight text-[#0A0A0A] sm:text-6xl lg:text-7xl font-serif leading-tight">
-          Where People, Business &amp; <br />
-          <span className="italic text-[#CFA252]">Ideas Connect.</span>
-        </h1>
-        
-        <p className="mx-auto max-w-2xl text-lg font-normal leading-relaxed text-[#0A0A0A]/70">
-          Glam Hub is an events management and business development company creating experiences, connections and solutions that help businesses and communities grow.
-        </p>
 
-        <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
-          <button className="flex items-center gap-2 rounded-full bg-[#0A0A0A] px-8 py-4 text-base font-bold text-[#FDFBF7] shadow-xl transition-all duration-300 hover:bg-[#CFA252] hover:text-black hover:scale-105" onClick={onContact}>
-            Work With Glam Hub <ArrowUpRight size={18} />
-          </button>
-          <a className="flex items-center gap-2 rounded-full border border-black/20 bg-black/5 px-8 py-4 text-base font-semibold text-[#0A0A0A] transition-all duration-300 hover:bg-black/10 hover:border-[#CFA252]" href="#services">
-            Explore Our Services
-          </a>
+        <div>
+          <div className="text-xs font-bold tracking-widest text-[#5E1A6E] uppercase">WHAT WE OFFER</div>
+          <p className="text-base text-[#1A0B22]/80 mt-1">Events, business support, branding &amp; marketing, tech &amp; innovation.</p>
+        </div>
+
+        <div>
+          <div className="text-xs font-bold tracking-widest text-[#5E1A6E] uppercase">WHO WE SERVE</div>
+          <p className="text-base text-[#1A0B22]/80 mt-1">Entrepreneurs, businesses, organisations, communities, partners.</p>
+        </div>
+
+        <div>
+          <div className="text-xs font-bold tracking-widest text-[#5E1A6E] uppercase">WHERE WE ARE</div>
+          <p className="text-base text-[#1A0B22]/80 mt-1">Atlantis, Western Cape, South Africa</p>
         </div>
       </div>
     </section>
   )
 }
 
-function ValueBanner() {
-  const points = ['Events Management', 'Business Support', 'Branding & Marketing', 'Tech & Innovation']
+function AboutStorySection() {
   return (
-    <div className="border-y border-black/10 bg-[#F7F3E9] py-6">
-      <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-around gap-6 px-6 text-sm font-semibold text-[#280C2E]">
-        {points.map((pt) => (
-          <div key={pt} className="flex items-center gap-2 transition-transform hover:scale-105">
-            <CheckCircle size={16} className="text-[#CFA252]" />
-            <span>{pt}</span>
+    <section className="py-12 px-6 max-w-3xl mx-auto space-y-6 border-t border-black/5">
+      <div className="text-xs font-bold tracking-widest text-[#CFA252] uppercase">ABOUT GLAM HUB</div>
+      <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#1A0B22]">
+        More Than Events. We Build Connections.
+      </h2>
+      <p className="text-base leading-relaxed text-[#1A0B22]/80">
+        Glam Hub began as an events-focused business and has developed into a broader business ecosystem spanning events, business support, branding &amp; marketing, and technology &amp; innovation.
+      </p>
+      <p className="text-base leading-relaxed text-[#1A0B22]/80">
+        We bring these services together so that people and businesses can connect, build, launch, promote and grow — through professional experiences and practical support.
+      </p>
+      <a href="#divisions" className="inline-flex items-center gap-2 text-sm font-bold text-[#5E1A6E] hover:underline pt-2">
+        Read our story &rarr;
+      </a>
+    </section>
+  )
+}
+
+function DivisionsSection({ onContact }) {
+  return (
+    <section className="py-16 px-6 max-w-3xl mx-auto space-y-8 border-t border-black/5" id="divisions">
+      <div className="space-y-2">
+        <div className="text-xs font-bold tracking-widest text-[#CFA252] uppercase">OUR DIVISIONS</div>
+        <h2 className="text-3xl font-serif font-bold text-[#1A0B22]">
+          Four divisions. One connected ecosystem.
+        </h2>
+      </div>
+
+      <div className="space-y-6">
+        {services.map((item) => (
+          <div key={item.num} className="rounded-2xl bg-white p-6 shadow-md border border-black/5 space-y-3">
+            <div className="text-xs font-bold text-[#CFA252]">{item.num}</div>
+            <h3 className="text-xl font-serif font-bold text-[#1A0B22]">{item.title}</h3>
+            <p className="text-sm text-[#1A0B22]/70 leading-relaxed">{item.description}</p>
+            <button onClick={onContact} className="inline-flex items-center gap-1 text-xs font-bold text-[#5E1A6E] hover:underline pt-2">
+              Learn more &rarr;
+            </button>
           </div>
         ))}
       </div>
-    </div>
+    </section>
   )
 }
 
-function OverviewSection() {
+function MerchSection({ onContact }) {
   return (
-    <section className="py-24 bg-[#F7F3E9] border-b border-black/10" id="about">
-      <div className="mx-auto max-w-4xl px-6 lg:px-8 space-y-12">
-        <div className="text-center space-y-3">
-          <div className="text-xs font-bold tracking-widest text-[#CFA252] uppercase">About Glam Hub</div>
-          <h2 className="text-3xl font-bold text-[#0A0A0A] sm:text-4xl font-serif">Who We Are &amp; What We Do</h2>
-        </div>
+    <section className="py-16 px-6 max-w-3xl mx-auto space-y-6 border-t border-black/5" id="branding">
+      <div className="text-xs font-bold tracking-widest text-[#CFA252] uppercase">GLAMHUBSTUDIO</div>
+      <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#1A0B22]">
+        Branding, print and promotional solutions.
+      </h2>
+      <p className="text-base text-[#1A0B22]/80 leading-relaxed">
+        Business branding, DTF printing, branded clothing, signage, promotional materials, business stationery and marketing materials.
+      </p>
+      <button onClick={onContact} className="rounded-full bg-[#5E1A6E] px-6 py-3 text-sm font-bold text-white hover:bg-[#7A238E] transition-all">
+        Request a Quote &rarr;
+      </button>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
-          <div className="rounded-2xl bg-white p-8 border border-black/10 shadow-sm space-y-2">
-            <div className="text-xs font-bold tracking-widest text-[#280C2E] uppercase">WHAT WE ARE</div>
-            <p className="text-base text-[#0A0A0A]/80 font-medium">An events management &amp; business development company.</p>
-          </div>
-
-          <div className="rounded-2xl bg-white p-8 border border-black/10 shadow-sm space-y-2">
-            <div className="text-xs font-bold tracking-widest text-[#280C2E] uppercase">WHAT WE OFFER</div>
-            <p className="text-base text-[#0A0A0A]/80 font-medium">Events, business support, branding &amp; marketing, tech &amp; innovation.</p>
-          </div>
-
-          <div className="rounded-2xl bg-white p-8 border border-black/10 shadow-sm space-y-2">
-            <div className="text-xs font-bold tracking-widest text-[#280C2E] uppercase">WHO WE SERVE</div>
-            <p className="text-base text-[#0A0A0A]/80 font-medium">Entrepreneurs, businesses, organisations, communities, partners.</p>
-          </div>
-
-          <div className="rounded-2xl bg-white p-8 border border-black/10 shadow-sm space-y-2">
-            <div className="text-xs font-bold tracking-widest text-[#280C2E] uppercase">WHERE WE ARE</div>
-            <p className="text-base text-[#0A0A0A]/80 font-medium">Atlantis, Western Cape, South Africa</p>
-          </div>
-        </div>
+      <div className="pt-4 overflow-hidden rounded-2xl border border-black/10 shadow-sm">
+        <img src={MERCH_IMAGE} alt="Branded merchandise and print work" className="w-full h-64 object-cover" />
       </div>
     </section>
   )
 }
 
-function ServicesSection({ onContact }) {
-  return (
-    <section className="py-24 bg-[#FDFBF7] border-b border-black/10" id="services">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8 space-y-16">
-        <div className="text-center space-y-4">
-          <div className="text-xs font-bold tracking-widest text-[#CFA252] uppercase">Our Divisions</div>
-          <h2 className="text-3xl font-bold tracking-tight text-[#0A0A0A] sm:text-4xl font-serif">
-            Solutions Tailored for <span className="italic text-[#CFA252]">Growth</span>
-          </h2>
-        </div>
+function ServicesListSection({ onContact }) {
+  const items = [
+    'Business branding',
+    'Marketing materials',
+    'Signage',
+    'Promotional materials',
+    'DTF printing',
+    'Branded clothing and apparel',
+    'Business stationery and print solutions',
+    'Visual marketing solutions',
+  ]
 
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-          {services.map((item) => (
-            <div
-              key={item.title}
-              className="group flex flex-col justify-between rounded-2xl bg-white p-8 text-black shadow-lg border border-black/5 border-t-4 border-t-[#CFA252] transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
-            >
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="rounded-full bg-[#280C2E] px-3 py-1 text-xs font-bold text-[#FDFBF7] transition-transform group-hover:scale-105">
-                    {item.tag}
-                  </span>
-                </div>
-                <h3 className="text-2xl font-bold text-[#0A0A0A] font-serif transition-colors group-hover:text-[#280C2E]">{item.title}</h3>
-                <p className="text-base font-normal leading-relaxed text-[#0A0A0A]/70">{item.description}</p>
-              </div>
-              <div className="mt-8 pt-4 border-t border-black/10">
-                <button onClick={onContact} className="inline-flex items-center gap-2 text-sm font-bold text-[#0A0A0A] hover:text-[#CFA252] transition-colors">
-                  Inquire Now <ArrowUpRight size={16} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
+  return (
+    <section className="py-16 px-6 max-w-3xl mx-auto space-y-6 border-t border-black/5">
+      <div className="text-xs font-bold tracking-widest text-[#CFA252] uppercase">SERVICES</div>
+      <h2 className="text-3xl font-serif font-bold text-[#1A0B22]">
+        Everything your brand needs in print.
+      </h2>
+
+      <ul className="space-y-3 pt-2">
+        {items.map((pt) => (
+          <li key={pt} className="flex items-center gap-3 text-sm text-[#1A0B22]/80">
+            <span className="h-2 w-2 rounded-full bg-[#CFA252]" />
+            <span>{pt}</span>
+          </li>
+        ))}
+      </ul>
+
+      <div className="pt-4">
+        <button onClick={onContact} className="rounded-full bg-[#5E1A6E] px-8 py-3.5 text-sm font-bold text-white hover:bg-[#7A238E] transition-all">
+          Request a Quote
+        </button>
       </div>
     </section>
   )
 }
 
-{/* NEW EVENTS SHOWCASE SECTION (Matching Screenshot) */}
-function EventsShowcaseSection() {
+function EventsSection() {
   return (
-    <section className="bg-[#1E0924] text-white py-16 lg:py-24" id="events">
-      <div className="mx-auto max-w-4xl px-6 lg:px-8 space-y-10">
-        {/* Banner Image */}
-        <div className="overflow-hidden rounded-2xl border border-white/10 shadow-2xl">
-          <img
-            src={EVENT_IMAGE_URL}
-            alt="Glam Hub Events Hall"
-            className="w-full h-64 sm:h-96 object-cover transition-transform duration-700 hover:scale-105"
-          />
-        </div>
-
-        {/* Text Copy & CTA */}
-        <div className="space-y-6">
-          <div className="text-xs font-bold tracking-widest text-[#E5C07B] uppercase">
-            EVENTS
-          </div>
-
-          <h2 className="text-3xl sm:text-5xl font-serif font-bold tracking-tight leading-tight">
-            Experiences that connect people and businesses.
-          </h2>
-
-          <p className="text-base sm:text-lg font-normal leading-relaxed text-white/80">
-            Networking evenings, corporate functions, business launches, brand activations, women empowerment events, wellness experiences and community gatherings.
-          </p>
-
-          <div className="pt-2">
-            <button
-              onClick={() => window.open(WHATSAPP_URL, '_blank', 'noopener,noreferrer')}
-              className="w-full sm:w-auto inline-flex items-center justify-center rounded-full bg-[#E5C07B] px-8 py-4 text-base font-bold text-black transition-all duration-300 hover:bg-white hover:scale-105 shadow-lg"
-            >
-              View Upcoming Events
-            </button>
-          </div>
-        </div>
+    <section className="px-6 max-w-3xl mx-auto space-y-8" id="events">
+      <div className="overflow-hidden rounded-2xl border border-white/10 shadow-2xl">
+        <img src={EVENT_HALL_IMAGE} alt="Events hall layout" className="w-full h-64 sm:h-96 object-cover" />
       </div>
-    </section>
-  )
-}
 
-function ContactSection({ onContact }) {
-  return (
-    <section className="py-24 bg-[#FDFBF7]" id="contact">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="rounded-3xl bg-[#F7F3E9] p-10 lg:p-16 text-center space-y-8 border border-black/10 shadow-lg">
-          <h2 className="text-3xl font-bold text-[#0A0A0A] sm:text-5xl font-serif">
-            Ready to <span className="italic text-[#CFA252]">Work With Us?</span>
-          </h2>
-          <p className="mx-auto max-w-xl text-base text-[#0A0A0A]/70">
-            Reach out via WhatsApp or submit a quick inquiry to discuss your next project, event, or business solution.
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <button className="flex items-center gap-2 rounded-full bg-[#0A0A0A] px-8 py-4 text-base font-bold text-[#FDFBF7] hover:bg-[#CFA252] hover:text-black hover:scale-105 transition-all duration-300 shadow-xl" onClick={() => window.open(WHATSAPP_URL, '_blank', 'noopener,noreferrer')}>
-              Talk on WhatsApp <MessageCircle size={18} />
-            </button>
-          </div>
+      <div className="space-y-4">
+        <div className="text-xs font-bold tracking-widest text-[#E5C07B] uppercase">EVENTS</div>
+        <h2 className="text-3xl sm:text-5xl font-serif font-bold leading-tight">
+          Experiences that connect people and businesses.
+        </h2>
+        <p className="text-base text-white/80 leading-relaxed">
+          Networking evenings, corporate functions, business launches, brand activations, women empowerment events, wellness experiences and community gatherings.
+        </p>
+        <div className="pt-2">
+          <button
+            onClick={() => window.open(WHATSAPP_URL, '_blank', 'noopener,noreferrer')}
+            className="w-full sm:w-auto rounded-full bg-[#E5C07B] px-8 py-4 text-base font-bold text-black hover:bg-white transition-all shadow-xl"
+          >
+            View Upcoming Events
+          </button>
         </div>
       </div>
     </section>
@@ -376,14 +369,38 @@ function ContactSection({ onContact }) {
 
 function Footer() {
   return (
-    <footer className="py-12 bg-[#F7F3E9] text-[#0A0A0A]/60 border-t border-black/10">
-      <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-6 sm:flex-row lg:px-8">
-        <a className="flex items-center gap-3" href="#top">
-          <img className="h-8 w-auto rounded border border-[#CFA252]/30" src={logoUrl} alt="Glam Hub Logo" />
-          <span className="text-sm font-bold text-[#0A0A0A] font-serif">GLAM HUB</span>
-        </a>
-        <span className="text-xs">© 2026 Glam Hub (Pty) Ltd. All rights reserved.</span>
-        <span className="text-xs text-[#0A0A0A]/60">Events &amp; Business Development</span>
+    <footer className="mt-20 pt-12 border-t border-white/10 text-white/80 px-6 max-w-3xl mx-auto space-y-8">
+      <div>
+        <h3 className="text-2xl font-serif font-bold text-white">Glam Hub (Pty) Ltd</h3>
+        <p className="text-xs text-white/60 mt-1">
+          Events Management | Business Support | Branding &amp; Marketing | Tech &amp; Innovation
+        </p>
+        <p className="text-xs text-[#E5C07B] mt-2">📍 Atlantis, Western Cape, South Africa</p>
+      </div>
+
+      <div className="grid grid-cols-2 gap-8 text-sm">
+        <div className="space-y-2">
+          <div className="text-xs font-bold text-[#E5C07B] uppercase tracking-wider">QUICK LINKS</div>
+          <ul className="space-y-1.5 text-xs text-white/70">
+            <li><a href="#top" className="hover:text-white">Home</a></li>
+            <li><a href="#about" className="hover:text-white">About</a></li>
+            <li><a href="#divisions" className="hover:text-white">Our Divisions</a></li>
+            <li><a href="#events" className="hover:text-white">Events</a></li>
+            <li><a href="#branding" className="hover:text-white">GlamHubStudio</a></li>
+          </ul>
+        </div>
+
+        <div className="space-y-2">
+          <div className="text-xs font-bold text-[#E5C07B] uppercase tracking-wider">CONTACT</div>
+          <div className="text-xs text-white/70 space-y-1">
+            <p className="flex items-center gap-1.5"><Phone size={12} /> 0751141473</p>
+            <p className="flex items-center gap-1.5"><Mail size={12} /> kelleemeyer28@gmail.com</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="text-xs text-white/40 pt-4 border-t border-white/5">
+        © 2026 Glam Hub (Pty) Ltd. All rights reserved.
       </div>
     </footer>
   )
@@ -391,14 +408,14 @@ function Footer() {
 
 function ContactModal({ onClose }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-md" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
-      <div className="relative w-full max-w-md rounded-2xl bg-[#FDFBF7] p-8 text-black shadow-2xl space-y-6 border-t-4 border-[#CFA252] animate-fade-in-up">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-md" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
+      <div className="relative w-full max-w-md rounded-2xl bg-[#FAF8F5] p-8 text-[#1A0B22] shadow-2xl space-y-6 border-t-4 border-[#CFA252]">
         <button className="absolute top-4 right-4 text-black/60 hover:text-black" onClick={onClose}>
           <X size={20} />
         </button>
         <div>
-          <div className="text-xs font-bold text-[#280C2E] uppercase tracking-wider">Start A Conversation</div>
-          <h2 className="text-2xl font-bold text-black mt-1 font-serif">Work With Glam Hub</h2>
+          <div className="text-xs font-bold text-[#5E1A6E] uppercase tracking-wider">Start A Conversation</div>
+          <h2 className="text-2xl font-serif font-bold text-black mt-1">Work With Glam Hub</h2>
         </div>
         <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); window.open(WHATSAPP_URL, '_blank') }}>
           <div>
@@ -413,7 +430,7 @@ function ContactModal({ onClose }) {
             <label className="block text-xs font-bold text-black mb-1">How can we help?</label>
             <textarea required rows="3" placeholder="Tell us about your project or event..." className="w-full rounded-lg border border-black/20 bg-white px-3 py-2 text-sm text-black focus:border-[#CFA252] focus:outline-none" />
           </div>
-          <button className="w-full rounded-full bg-[#0A0A0A] py-3 text-sm font-bold text-[#FDFBF7] hover:bg-[#CFA252] hover:text-black transition-all duration-300" type="submit">
+          <button className="w-full rounded-full bg-[#5E1A6E] py-3 text-sm font-bold text-white hover:bg-[#7A238E] transition-all" type="submit">
             Send Inquiry via WhatsApp
           </button>
         </form>
