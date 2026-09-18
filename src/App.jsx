@@ -16,6 +16,7 @@ import logoUrl from '../glamhublogo.jpeg'
 import ProjectsPage from './ProjectsPage.jsx'
 
 const WHATSAPP_URL = 'https://wa.me/message/3AYEEDG6LF4RF1'
+const EVENT_IMAGE_URL = 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&q=80'
 
 const services = [
   {
@@ -53,24 +54,31 @@ function App() {
         <Route
           path="*"
           element={
-            <div className="relative bg-[#FDFBF7] font-sans antialiased text-[#0A0A0A] selection:bg-[#E5C07B] selection:text-black">
-              {/* Sticky Top Navbar */}
+            <div className="relative min-h-screen bg-[#FDFBF7] font-sans antialiased text-[#0A0A0A] selection:bg-[#E5C07B] selection:text-black">
+              {/* Top Navbar */}
               <Navbar menuOpen={menuOpen} setMenuOpen={setMenuOpen} onContact={openContact} />
 
-              <main className="relative">
-                {/* 1. STICKY HERO (Pinned background canvas) */}
-                <div className="sticky top-0 z-0 flex flex-col justify-center min-h-screen">
-                  <Hero onContact={openContact} />
-                </div>
+              <main>
+                {/* Hero Section */}
+                <Hero onContact={openContact} />
 
-                {/* 2. CURTAIN CONTENT (Slides over Hero on scroll) */}
-                <div className="relative z-10 shadow-[0_-25px_50px_rgba(0,0,0,0.08)] border-t border-[#E5C07B]/40 bg-[#FDFBF7]">
-                  <ValueBanner />
-                  <OverviewSection />
-                  <ServicesSection onContact={openContact} />
-                  <ContactSection onContact={openContact} />
-                  <Footer />
-                </div>
+                {/* Value / Bullet Banner */}
+                <ValueBanner />
+
+                {/* Overview / About */}
+                <OverviewSection />
+
+                {/* Services Section */}
+                <ServicesSection onContact={openContact} />
+
+                {/* Featured Events Showcase Section */}
+                <EventsShowcaseSection />
+
+                {/* Contact CTA Section */}
+                <ContactSection onContact={openContact} />
+
+                {/* Footer */}
+                <Footer />
               </main>
 
               {modalOpen && <ContactModal onClose={() => setModalOpen(false)} />}
@@ -86,6 +94,7 @@ function Navbar({ menuOpen, setMenuOpen, onContact }) {
   const menuItems = [
     { label: 'SERVICES', href: '#services', isExternal: false },
     { label: 'ABOUT', href: '#about', isExternal: false },
+    { label: 'EVENTS', href: '#events', isExternal: false },
     { label: 'CONTACT', href: WHATSAPP_URL, isExternal: true },
     { label: 'SAY HI', href: WHATSAPP_URL, isExternal: true },
   ]
@@ -110,6 +119,7 @@ function Navbar({ menuOpen, setMenuOpen, onContact }) {
           <div className="hidden md:flex md:items-center md:gap-8">
             <a href="#services" className="text-sm font-medium text-[#0A0A0A]/80 hover:text-[#CFA252] transition">Services</a>
             <a href="#about" className="text-sm font-medium text-[#0A0A0A]/80 hover:text-[#CFA252] transition">About</a>
+            <a href="#events" className="text-sm font-medium text-[#0A0A0A]/80 hover:text-[#CFA252] transition">Events</a>
             <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-[#0A0A0A]/80 hover:text-[#CFA252] transition">Contact</a>
             <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-[#0A0A0A]/80 hover:text-[#CFA252] transition">Say Hi</a>
             <button className="flex items-center justify-center gap-2 rounded-full bg-[#0A0A0A] px-6 py-2.5 text-sm font-bold text-[#FDFBF7] transition-all hover:bg-[#CFA252] hover:text-black" onClick={onContact}>
@@ -126,7 +136,7 @@ function Navbar({ menuOpen, setMenuOpen, onContact }) {
 
       {/* Full-Screen Overlay Mobile Menu */}
       {menuOpen && (
-        <div className="fixed inset-0 z-[100] flex flex-col justify-between bg-[#FDFBF7] px-8 py-10 text-[#0A0A0A] animate-fade-in-up">
+        <div className="fixed inset-0 z-[100] flex flex-col justify-between bg-[#FDFBF7] px-8 py-10 text-[#0A0A0A]">
           <div className="flex items-center justify-between">
             <button className="p-2 text-[#0A0A0A] hover:text-[#CFA252] transition" onClick={() => setMenuOpen(false)}>
               <X size={32} />
@@ -180,10 +190,10 @@ function Navbar({ menuOpen, setMenuOpen, onContact }) {
 function Hero({ onContact }) {
   return (
     <section className="relative overflow-hidden py-24 lg:py-32 bg-[#FDFBF7]" id="top">
-      {/* Background Radial Glow */}
+      {/* Background Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#E5C07B]/20 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8 text-center space-y-8 animate-fade-in-up">
+      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8 text-center space-y-8">
         <div className="inline-flex items-center gap-2 rounded-full border border-[#CFA252]/40 bg-[#280C2E]/10 px-4 py-1.5 text-xs font-semibold text-[#280C2E] transition-transform hover:scale-105">
           <Sparkles size={14} className="animate-pulse text-[#CFA252]" /> EVENTS · BUSINESS · BRANDING · TECH
         </div>
@@ -213,7 +223,7 @@ function Hero({ onContact }) {
 function ValueBanner() {
   const points = ['Events Management', 'Business Support', 'Branding & Marketing', 'Tech & Innovation']
   return (
-    <div className="border-b border-black/10 bg-[#F7F3E9] py-6">
+    <div className="border-y border-black/10 bg-[#F7F3E9] py-6">
       <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-around gap-6 px-6 text-sm font-semibold text-[#280C2E]">
         {points.map((pt) => (
           <div key={pt} className="flex items-center gap-2 transition-transform hover:scale-105">
@@ -265,7 +275,7 @@ function ServicesSection({ onContact }) {
   return (
     <section className="py-24 bg-[#FDFBF7] border-b border-black/10" id="services">
       <div className="mx-auto max-w-7xl px-6 lg:px-8 space-y-16">
-        <div className="text-center space-y-4 animate-fade-in-up">
+        <div className="text-center space-y-4">
           <div className="text-xs font-bold tracking-widest text-[#CFA252] uppercase">Our Divisions</div>
           <h2 className="text-3xl font-bold tracking-tight text-[#0A0A0A] sm:text-4xl font-serif">
             Solutions Tailored for <span className="italic text-[#CFA252]">Growth</span>
@@ -294,6 +304,48 @@ function ServicesSection({ onContact }) {
               </div>
             </div>
           ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+{/* NEW EVENTS SHOWCASE SECTION (Matching Screenshot) */}
+function EventsShowcaseSection() {
+  return (
+    <section className="bg-[#1E0924] text-white py-16 lg:py-24" id="events">
+      <div className="mx-auto max-w-4xl px-6 lg:px-8 space-y-10">
+        {/* Banner Image */}
+        <div className="overflow-hidden rounded-2xl border border-white/10 shadow-2xl">
+          <img
+            src={EVENT_IMAGE_URL}
+            alt="Glam Hub Events Hall"
+            className="w-full h-64 sm:h-96 object-cover transition-transform duration-700 hover:scale-105"
+          />
+        </div>
+
+        {/* Text Copy & CTA */}
+        <div className="space-y-6">
+          <div className="text-xs font-bold tracking-widest text-[#E5C07B] uppercase">
+            EVENTS
+          </div>
+
+          <h2 className="text-3xl sm:text-5xl font-serif font-bold tracking-tight leading-tight">
+            Experiences that connect people and businesses.
+          </h2>
+
+          <p className="text-base sm:text-lg font-normal leading-relaxed text-white/80">
+            Networking evenings, corporate functions, business launches, brand activations, women empowerment events, wellness experiences and community gatherings.
+          </p>
+
+          <div className="pt-2">
+            <button
+              onClick={() => window.open(WHATSAPP_URL, '_blank', 'noopener,noreferrer')}
+              className="w-full sm:w-auto inline-flex items-center justify-center rounded-full bg-[#E5C07B] px-8 py-4 text-base font-bold text-black transition-all duration-300 hover:bg-white hover:scale-105 shadow-lg"
+            >
+              View Upcoming Events
+            </button>
+          </div>
         </div>
       </div>
     </section>
