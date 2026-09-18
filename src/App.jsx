@@ -11,27 +11,24 @@ import {
   X,
 } from 'lucide-react'
 import logoUrl from '../glamhublogo.jpeg'
-import dtfPrintImg from '../image_083804.jpg'
-import printerOperatorImg from '../image_08387b.jpg'
-import tshirtsImg from '../image_083f46.jpg'
 import ProjectsPage from './ProjectsPage.jsx'
 
 const WHATSAPP_URL = 'https://wa.me/message/3AYEEDG6LF4RF1'
 const EVENT_HALL_IMAGE = 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&q=80'
 
-// Branding & Printing slider images
+// Branding & Printing slider images (Production URLs)
 const BRANDING_SLIDER_IMAGES = [
   {
-    url: dtfPrintImg,
-    alt: 'DTF Printing and Heat Transfer Film Designs',
-  },
-  {
-    url: printerOperatorImg,
-    alt: 'Commercial Large Format & Sticker Printing',
-  },
-  {
-    url: tshirtsImg,
+    url: 'https://images.unsplash.com/photo-1562157873-818bc0726f68?auto=format&fit=crop&w=1200&q=80',
     alt: 'Custom T-Shirt Apparel & Apparel Branding',
+  },
+  {
+    url: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80',
+    alt: 'DTF Printing and Transfers',
+  },
+  {
+    url: 'https://images.unsplash.com/photo-1572021335469-31706a17aaef?auto=format&fit=crop&w=1200&q=80',
+    alt: 'Commercial Large Format Printing',
   },
 ]
 
