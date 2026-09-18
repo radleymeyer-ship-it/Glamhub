@@ -1,15 +1,13 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import {
   ArrowUpRight,
-  Facebook,
-  Instagram,
+  ChevronLeft,
+  ChevronRight,
   Mail,
   Menu,
   MessageCircle,
   Phone,
-  Sparkles,
-  Twitter,
   X,
 } from 'lucide-react'
 import logoUrl from '../glamhublogo.jpeg'
@@ -17,8 +15,23 @@ import ProjectsPage from './ProjectsPage.jsx'
 
 const WHATSAPP_URL = 'https://wa.me/message/3AYEEDG6LF4RF1'
 const EVENT_HALL_IMAGE = 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&q=80'
-const NETWORKING_IMAGE = 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1200&q=80'
 const MERCH_IMAGE = 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=1200&q=80'
+
+// Event slider images for the Hero banner
+const HERO_SLIDER_IMAGES = [
+  {
+    url: 'https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?auto=format&fit=crop&w=1200&q=80',
+    alt: 'Formal Dining Event Setup',
+  },
+  {
+    url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1200&q=80',
+    alt: 'Corporate Networking Event',
+  },
+  {
+    url: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=1200&q=80',
+    alt: 'Celebration and Brand Activation',
+  },
+]
 
 const services = [
   {
@@ -118,8 +131,9 @@ function Navbar({ menuOpen, setMenuOpen, onContact }) {
   return (
     <>
       <header className="sticky top-0 z-50 w-full bg-[#FAF8F5]/90 backdrop-blur-md border-b border-black/5">
-        <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+        <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
           <a className="flex items-center gap-3" href="#top">
+            <img src={logoUrl} alt="Glam Hub Logo" className="h-10 w-auto rounded-md object-contain" />
             <span className="text-2xl font-serif font-bold text-[#2E0B3B]">Glam Hub</span>
           </a>
 
@@ -133,7 +147,10 @@ function Navbar({ menuOpen, setMenuOpen, onContact }) {
       {menuOpen && (
         <div className="fixed inset-0 z-[100] flex flex-col justify-between bg-[#FAF8F5] px-8 py-8 text-[#1A0B22]">
           <div className="flex items-center justify-between border-b border-black/5 pb-4">
-            <span className="text-2xl font-serif font-bold text-[#2E0B3B]">Glam Hub</span>
+            <div className="flex items-center gap-3">
+              <img src={logoUrl} alt="Glam Hub Logo" className="h-10 w-auto rounded-md object-contain" />
+              <span className="text-2xl font-serif font-bold text-[#2E0B3B]">Glam Hub</span>
+            </div>
             <button className="rounded-full border border-black/10 p-2 text-black hover:bg-black/5" onClick={() => setMenuOpen(false)}>
               <X size={24} />
             </button>
@@ -170,6 +187,24 @@ function Navbar({ menuOpen, setMenuOpen, onContact }) {
 }
 
 function Hero({ onContact }) {
+  const [currentSlide, setCurrentSlide] = useState(0)
+
+  // Auto-advance slider every 4 seconds
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % HERO_SLIDER_IMAGES.length)
+    }, 4000)
+    return () => clearInterval(timer)
+  }, [])
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev === 0 ? HERO_SLIDER_IMAGES.length - 1 : prev - 1))
+  }
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % HERO_SLIDER_IMAGES.length)
+  }
+
   return (
     <section className="relative px-6 py-16 text-center space-y-8 max-w-2xl mx-auto" id="top">
       <div className="text-xs font-semibold tracking-widest text-[#E5C07B] uppercase">
@@ -185,7 +220,7 @@ function Hero({ onContact }) {
         Glam Hub is an events management and business development company creating experiences, connections and solutions that help businesses and communities grow.
       </p>
 
-      <div className="flex flex-col gap-3 pt-4 sm:flex-row sm:justify-center">
+      <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:justify-center">
         <button
           onClick={onContact}
           className="inline-flex items-center justify-center gap-2 rounded-full bg-[#E5C07B] px-8 py-4 text-base font-bold text-black transition-all hover:bg-white"
@@ -200,8 +235,50 @@ function Hero({ onContact }) {
         </a>
       </div>
 
-      <div className="pt-8 overflow-hidden rounded-2xl border border-white/10">
-        <img src={NETWORKING_IMAGE} alt="Networking Event" className="w-full h-64 sm:h-80 object-cover" />
+      {/* Hero Interactive Image Carousel */}
+      <div className="relative pt-6">
+        <div className="relative h-64 sm:h-80 w-full overflow-hidden rounded-2xl border border-white/10 shadow-2xl">
+          {HERO_SLIDER_IMAGES.map((image, index) => (
+            <img
+              key={image.url}
+              src={image.url}
+              alt={image.alt}
+              className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-in-out ${
+                index === currentSlide ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
+              }`}
+            />
+          ))}
+
+          {/* Navigation Controls */}
+          <button
+            onClick={prevSlide}
+            aria-label="Previous image"
+            className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-black/40 p-2 text-white/80 backdrop-blur-sm transition-all hover:bg-black/70 hover:text-white"
+          >
+            <ChevronLeft size={20} />
+          </button>
+          <button
+            onClick={nextSlide}
+            aria-label="Next image"
+            className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-black/40 p-2 text-white/80 backdrop-blur-sm transition-all hover:bg-black/70 hover:text-white"
+          >
+            <ChevronRight size={20} />
+          </button>
+
+          {/* Carousel Indicators */}
+          <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-1.5">
+            {HERO_SLIDER_IMAGES.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentSlide(index)}
+                aria-label={`Go to slide ${index + 1}`}
+                className={`h-2 rounded-full transition-all ${
+                  index === currentSlide ? 'w-6 bg-[#E5C07B]' : 'w-2 bg-white/50'
+                }`}
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   )
