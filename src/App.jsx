@@ -15,7 +15,9 @@ import ProjectsPage from './ProjectsPage.jsx'
 
 const WHATSAPP_URL = 'https://wa.me/message/3AYEEDG6LF4RF1'
 const EVENT_HALL_IMAGE = 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&q=80'
-const MERCH_IMAGE = 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=1200&q=80'
+
+// Updated Merch/Branding image to custom t-shirt printing & branding
+const MERCH_IMAGE = 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=1200&q=80'
 
 // Event slider images for the Hero banner
 const HERO_SLIDER_IMAGES = [
@@ -189,7 +191,6 @@ function Navbar({ menuOpen, setMenuOpen, onContact }) {
 function Hero({ onContact }) {
   const [currentSlide, setCurrentSlide] = useState(0)
 
-  // Auto-advance slider every 4 seconds
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % HERO_SLIDER_IMAGES.length)
@@ -249,7 +250,6 @@ function Hero({ onContact }) {
             />
           ))}
 
-          {/* Navigation Controls */}
           <button
             onClick={prevSlide}
             aria-label="Previous image"
@@ -265,7 +265,6 @@ function Hero({ onContact }) {
             <ChevronRight size={20} />
           </button>
 
-          {/* Carousel Indicators */}
           <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-1.5">
             {HERO_SLIDER_IMAGES.map((_, index) => (
               <button
@@ -373,7 +372,7 @@ function MerchSection({ onContact }) {
       </button>
 
       <div className="pt-4 overflow-hidden rounded-2xl border border-black/10 shadow-sm">
-        <img src={MERCH_IMAGE} alt="Branded merchandise and print work" className="w-full h-64 object-cover" />
+        <img src={MERCH_IMAGE} alt="T-shirt screen printing and apparel branding" className="w-full h-64 object-cover" />
       </div>
     </section>
   )
