@@ -3,7 +3,7 @@ import { ArrowLeft, ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import logoUrl from '../glamhublogo.jpeg'
 
-const WHATSAPP_URL = 'https://wa.me/message/3AYEEDG6LF4RF1'
+const CONTACT_EMAIL = 'info@glamhubelite.co.za'
 
 const serviceOptions = [
   'Event Management',
@@ -17,20 +17,28 @@ const serviceOptions = [
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: '', organisation: '', email: '', phone: '', service: '', message: '' })
+  const [submissionState, setSubmissionState] = useState('idle')
 
   const updateField = (event) => setForm({ ...form, [event.target.name]: event.target.value })
 
-  const submitForm = (event) => {
+  const submitForm = async (event) => {
     event.preventDefault()
-    const message = [
-      `Name: ${form.name}`,
-      `Business / Organisation: ${form.organisation}`,
-      `Email: ${form.email}`,
-      `Phone / WhatsApp: ${form.phone}`,
-      `Service Required: ${form.service}`,
-      `Message: ${form.message}`,
-    ].join('\n')
-    window.open(`${WHATSAPP_URL}?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer')
+    const subject = `${form.service || 'General'} enquiry from ${form.name}`
+    setSubmissionState('sending')
+
+    try {
+      const response = await fetch(`https://formsubmit.co/ajax/${CONTACT_EMAIL}`, {
+        method: 'POST',
+        headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...form, _subject: subject, _captcha: 'false' }),
+      })
+
+      if (!response.ok) throw new Error('Email service rejected the request')
+      setSubmissionState('sent')
+      setForm({ name: '', organisation: '', email: '', phone: '', service: '', message: '' })
+    } catch {
+      setSubmissionState('error')
+    }
   }
 
   return <div className="contact-page">
@@ -55,8 +63,10 @@ export default function ContactPage() {
           <ContactField label="Phone / WhatsApp" name="phone" type="tel" value={form.phone} onChange={updateField} required />
           <label className="contact-field"><span>Service Required</span><select name="service" value={form.service} onChange={updateField} required><option value="">Select a service</option>{serviceOptions.map((option) => <option key={option} value={option}>{option}</option>)}</select></label>
           <label className="contact-field"><span>Message</span><textarea name="message" rows="7" value={form.message} onChange={updateField} required /></label>
-          <button className="contact-submit" type="submit">Send via WhatsApp <ArrowUpRight size={18} /></button>
+          <button className="contact-submit" type="submit" disabled={submissionState === 'sending'}>{submissionState === 'sending' ? 'Sending...' : 'Send via Email'} <ArrowUpRight size={18} /></button>
         </form>
+        {submissionState === 'sent' && <div className="contact-success" role="status">Email sent successfully.</div>}
+        {submissionState === 'error' && <div className="contact-error" role="alert">We could not send the email. Please try again.</div>}
         <p className="contact-form-note">We usually respond within one business day.</p>
       </main>
     </section>

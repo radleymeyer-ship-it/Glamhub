@@ -512,7 +512,7 @@ function Footer() {
           <div className="text-xs font-bold text-[#E5C07B] uppercase tracking-wider">CONTACT</div>
           <div className="text-xs text-white/70 space-y-1">
             <p className="flex items-center gap-1.5"><Phone size={12} /> 0751141473</p>
-            <p className="flex items-center gap-1.5"><Mail size={12} /> kelleemeyer28@gmail.com</p>
+            <p className="flex items-center gap-1.5"><Mail size={12} /> info@glamhubelite.co.za</p>
           </div>
         </div>
       </div>
