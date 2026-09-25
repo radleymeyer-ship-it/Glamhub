@@ -21,6 +21,15 @@
 .home-page p, .home-page a, .home-page button, .home-page label, .home-page input, .home-page textarea, .home-page select { font-family:Arial,sans-serif; }
 .home-page .font-serif { font-family:Arial,sans-serif; }
 .home-page .italic { font-style:italic; }
+.home-page .hero-headline { overflow:hidden; }
+.home-page .hero-drop-line { display:block; opacity:0; transform:translateY(-110%); animation:heroDropIn .85s cubic-bezier(.22,.8,.28,1) forwards; }
+.home-page .hero-drop-two { animation-delay:.12s; }
+.home-page .hero-drop-three { animation-delay:.24s; }
+.home-page .hero-text { animation:heroFadeUp .75s ease .5s both; }
+.home-page .hero-actions { animation:heroFadeUp .75s ease .62s both; }
+@keyframes heroDropIn { from { opacity:0; transform:translateY(-110%); } to { opacity:1; transform:translateY(0); } }
+@keyframes heroFadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .home-page .hero-drop-line, .home-page .hero-text, .home-page .hero-actions { animation:none; opacity:1; transform:none; } }
 @media (max-width:700px) { .contact-intro { min-height:460px; }.contact-intro-inner { width:calc(100% - 48px); padding:78px 0 65px; }.contact-eyebrow { margin-bottom:35px; font-size:12px; }.contact-intro h1 { font-size:clamp(47px,13vw,68px); }.contact-intro p { margin-top:32px; font-size:18px; }.desktop-break { display:none; }.contact-page-nav { height:80px; padding:0 20px; }.contact-brand img { width:48px; height:40px; }.contact-brand span { font-size:25px; }.contact-nav-actions { gap:10px; }.contact-back-link span { display:none; }.contact-menu-button { width:48px; height:48px; }.contact-form-wrap { width:calc(100% - 48px); padding:48px 0 75px; }.contact-form-heading span { margin:25px 0 48px; }.contact-form-wrap form { gap:26px; }.contact-field span { font-size:16px; }.contact-field input,.contact-field select,.contact-field textarea { padding:16px; font-size:16px; border-radius:12px; }.contact-field input,.contact-field select { min-height:58px; }.contact-field textarea { min-height:170px; }.contact-submit { width:100%; }.contact-menu-overlay { padding:0 20px; }.contact-menu-overlay nav a { font-size:30px; } }
 
 @theme {

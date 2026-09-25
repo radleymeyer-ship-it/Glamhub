@@ -229,9 +229,10 @@ function Hero({ onContact }) {
         EVENTS · BUSINESS · BRANDING · TECH
       </div>
 
-      <h1 className="text-4xl sm:text-6xl font-serif font-bold leading-tight">
-        Where People, Business &amp; <br />
-        <span className="italic text-[#E5C07B]">Ideas Connect.</span>
+      <h1 className="hero-headline text-4xl sm:text-6xl font-serif font-bold leading-tight">
+        <span className="hero-drop-line hero-drop-one">Where People, Business</span>
+        <span className="hero-drop-line hero-drop-two">&amp;</span>
+        <span className="hero-drop-line hero-drop-three italic text-[#E5C07B]">Ideas Connect.</span>
       </h1>
 
       <p className="text-base sm:text-lg text-white/80 leading-relaxed font-normal">
