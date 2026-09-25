@@ -13,24 +13,20 @@ import {
 import logoUrl from '../glamhublogo.jpeg'
 import ProjectsPage from './ProjectsPage.jsx'
 import ContactPage from './ContactPage.jsx'
+import sliderImage1 from '../Slider-image1.png'
+import sliderImage2 from '../Silder-image2.png'
+import sliderImage3 from '../Silder-image3.jpeg'
+import sliderImage4 from '../Silder-image4.jpeg'
 
 const WHATSAPP_URL = 'https://wa.me/message/3AYEEDG6LF4RF1'
 const EVENT_HALL_IMAGE = 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&q=80'
 
 // Branding & Printing slider images (Production URLs)
 const BRANDING_SLIDER_IMAGES = [
-  {
-    url: 'https://images.unsplash.com/photo-1562157873-818bc0726f68?auto=format&fit=crop&w=1200&q=80',
-    alt: 'Custom T-Shirt Apparel & Apparel Branding',
-  },
-  {
-    url: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80',
-    alt: 'DTF Printing and Transfers',
-  },
-  {
-    url: 'https://images.unsplash.com/photo-1572021335469-31706a17aaef?auto=format&fit=crop&w=1200&q=80',
-    alt: 'Commercial Large Format Printing',
-  },
+  { url: sliderImage1, alt: 'Glam Hub Studio image one' },
+  { url: sliderImage2, alt: 'Glam Hub Studio image two' },
+  { url: sliderImage3, alt: 'Glam Hub Studio image three' },
+  { url: sliderImage4, alt: 'Glam Hub Studio image four' },
 ]
 
 // Event slider images for the Hero banner
