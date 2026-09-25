@@ -12,6 +12,7 @@ import {
 } from 'lucide-react'
 import logoUrl from '../glamhublogo.jpeg'
 import ProjectsPage from './ProjectsPage.jsx'
+import ContactPage from './ContactPage.jsx'
 
 const WHATSAPP_URL = 'https://wa.me/message/3AYEEDG6LF4RF1'
 const EVENT_HALL_IMAGE = 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&q=80'
@@ -48,32 +49,42 @@ const HERO_SLIDER_IMAGES = [
   },
 ]
 
+const EVENT_BANNER_IMAGES = [
+  ...HERO_SLIDER_IMAGES,
+  { url: EVENT_HALL_IMAGE, alt: 'Elegant event celebration and dining setup' },
+]
+
 const services = [
   {
     num: '01',
     title: 'Events',
     description: 'Creating professional and meaningful experiences that connect people, businesses and communities.',
+    offerings: ['Event planning and coordination', 'Corporate functions and launches', 'Brand activations', 'Women empowerment events', 'Wellness and community gatherings'],
   },
   {
     num: '02',
     title: 'Business Support',
     description: 'Providing practical support to entrepreneurs and organisations looking to build visibility and growth.',
+    offerings: ['Business development support', 'Planning and structuring', 'Networking opportunities', 'Visibility and growth guidance', 'Partnership support'],
   },
   {
     num: '03',
     title: 'Branding & Marketing',
     description: 'Custom apparel, DTF printing, signage, promotional materials, and business stationery.',
+    offerings: ['Business branding', 'DTF printing and apparel', 'Signage and displays', 'Promotional materials', 'Business stationery'],
   },
   {
     num: '04',
     title: 'Tech & Innovation',
     description: 'Digital solutions, platforms, and automated workflow tools built to empower business operations.',
+    offerings: ['Digital networking solutions', 'Technology-driven platforms', 'Workflow automation', 'Business systems support', 'Innovation partnerships'],
   },
 ]
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
+  const [selectedService, setSelectedService] = useState(null)
 
   const openContact = () => setModalOpen(true)
 
@@ -81,16 +92,17 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/projects" element={<ProjectsPage />} />
+        <Route path="/contact" element={<ContactPage />} />
         <Route
           path="*"
           element={
-            <div className="relative bg-[#1A0B22] font-sans antialiased text-[#0A0A0A] selection:bg-[#E5C07B] selection:text-black">
+            <div className="home-page relative bg-[#1A0B22] font-sans antialiased text-[#0A0A0A] selection:bg-[#E5C07B] selection:text-black">
               {/* Sticky Top Navbar */}
               <Navbar menuOpen={menuOpen} setMenuOpen={setMenuOpen} onContact={openContact} />
 
               <main className="relative">
                 {/* 1. STICKY DARK HERO (Pinned background canvas) */}
-                <div className="sticky top-0 z-0 flex flex-col justify-center min-h-screen bg-[#1A0B22] text-white">
+                <div className="sticky top-0 z-0 flex flex-col justify-center min-h-[calc(100svh-64px)] bg-[#1A0B22] text-white">
                   <Hero onContact={openContact} />
                 </div>
 
@@ -98,7 +110,7 @@ function App() {
                 <div className="relative z-10 shadow-[0_-30px_60px_rgba(0,0,0,0.4)] rounded-t-[2.5rem] bg-[#FAF8F5] text-[#1A0B22]">
                   <AboutOverviewSection />
                   <AboutStorySection />
-                  <DivisionsSection onContact={openContact} />
+                  <DivisionsSection onSelectService={setSelectedService} />
                   <MerchSection onContact={openContact} />
                   <ServicesListSection onContact={openContact} />
                 </div>
@@ -122,6 +134,7 @@ function App() {
               </a>
 
               {modalOpen && <ContactModal onClose={() => setModalOpen(false)} />}
+              {selectedService && <ServiceModal service={selectedService} onClose={() => setSelectedService(null)} onContact={openContact} />}
             </div>
           }
         />
@@ -140,7 +153,7 @@ function Navbar({ menuOpen, setMenuOpen, onContact }) {
     { label: 'GlamHubStudio', href: '#branding' },
     { label: 'Tech & Innovation', href: '#divisions' },
     { label: 'Projects', href: '/projects' },
-    { label: 'Contact', href: WHATSAPP_URL, isExternal: true },
+    { label: 'Contact', href: '/contact' },
   ]
 
   return (
@@ -171,7 +184,7 @@ function Navbar({ menuOpen, setMenuOpen, onContact }) {
             </button>
           </div>
 
-          <div className="flex flex-col gap-4 py-6 overflow-y-auto">
+          <div className="min-h-0 flex-1 flex flex-col gap-4 overflow-y-auto py-6">
             {menuItems.map((item) => (
               <a
                 key={item.label}
@@ -184,7 +197,7 @@ function Navbar({ menuOpen, setMenuOpen, onContact }) {
             ))}
           </div>
 
-          <div className="pt-4">
+          <div className="shrink-0 pt-4">
             <button
               className="w-full rounded-full bg-[#5E1A6E] py-4 text-center text-sm font-bold text-white hover:bg-[#7A238E] transition-all"
               onClick={() => {
@@ -206,21 +219,16 @@ function Hero({ onContact }) {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % HERO_SLIDER_IMAGES.length)
-    }, 4000)
+      setCurrentSlide((prev) => (prev + 1) % EVENT_BANNER_IMAGES.length)
+    }, 4500)
     return () => clearInterval(timer)
   }, [])
 
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev === 0 ? HERO_SLIDER_IMAGES.length - 1 : prev - 1))
-  }
-
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % HERO_SLIDER_IMAGES.length)
-  }
+  const previousSlide = () => setCurrentSlide((prev) => (prev === 0 ? EVENT_BANNER_IMAGES.length - 1 : prev - 1))
+  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % EVENT_BANNER_IMAGES.length)
 
   return (
-    <section className="relative px-6 py-16 text-center space-y-8 max-w-2xl mx-auto" id="top">
+    <section className="relative px-6 py-8 text-center space-y-5 max-w-3xl mx-auto" id="top">
       <div className="text-xs font-semibold tracking-widest text-[#E5C07B] uppercase">
         EVENTS · BUSINESS · BRANDING · TECH
       </div>
@@ -249,47 +257,14 @@ function Hero({ onContact }) {
         </a>
       </div>
 
-      {/* Hero Interactive Image Carousel */}
-      <div className="relative pt-6">
-        <div className="relative h-64 sm:h-80 w-full overflow-hidden rounded-2xl border border-white/10 shadow-2xl">
-          {HERO_SLIDER_IMAGES.map((image, index) => (
-            <img
-              key={image.url}
-              src={image.url}
-              alt={image.alt}
-              className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-in-out ${
-                index === currentSlide ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
-              }`}
-            />
-          ))}
-
-          <button
-            onClick={prevSlide}
-            aria-label="Previous image"
-            className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-black/40 p-2 text-white/80 backdrop-blur-sm transition-all hover:bg-black/70 hover:text-white"
-          >
-            <ChevronLeft size={20} />
-          </button>
-          <button
-            onClick={nextSlide}
-            aria-label="Next image"
-            className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-black/40 p-2 text-white/80 backdrop-blur-sm transition-all hover:bg-black/70 hover:text-white"
-          >
-            <ChevronRight size={20} />
-          </button>
-
-          <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-1.5">
-            {HERO_SLIDER_IMAGES.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentSlide(index)}
-                aria-label={`Go to slide ${index + 1}`}
-                className={`h-2 rounded-full transition-all ${
-                  index === currentSlide ? 'w-6 bg-[#E5C07B]' : 'w-2 bg-white/50'
-                }`}
-              />
-            ))}
-          </div>
+      <div className="relative pt-2">
+        <div className="relative h-44 sm:h-56 w-full overflow-hidden rounded-2xl border border-white/10 shadow-2xl">
+          {EVENT_BANNER_IMAGES.map((image, index) => <img key={image.url} src={image.url} alt={image.alt} className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${index === currentSlide ? 'opacity-100' : 'opacity-0'}`} />)}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#1A0B22]/70 via-transparent to-transparent" />
+          <span className="absolute bottom-4 left-5 text-xs font-bold tracking-[0.2em] text-white uppercase">Events / Celebrations</span>
+          <button onClick={previousSlide} aria-label="Previous event image" className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-black/40 p-2 text-white backdrop-blur-sm hover:bg-black/70"><ChevronLeft size={18} /></button>
+          <button onClick={nextSlide} aria-label="Next event image" className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-black/40 p-2 text-white backdrop-blur-sm hover:bg-black/70"><ChevronRight size={18} /></button>
+          <div className="absolute bottom-4 right-5 flex gap-1.5">{EVENT_BANNER_IMAGES.map((image, index) => <button key={image.url} onClick={() => setCurrentSlide(index)} aria-label={`Show event image ${index + 1}`} className={`h-2 rounded-full transition-all ${index === currentSlide ? 'w-6 bg-[#E5C07B]' : 'w-2 bg-white/60'}`} />)}</div>
         </div>
       </div>
     </section>
@@ -344,7 +319,7 @@ function AboutStorySection() {
   )
 }
 
-function DivisionsSection({ onContact }) {
+function DivisionsSection({ onSelectService }) {
   return (
     <section className="py-16 px-6 max-w-3xl mx-auto space-y-8 border-t border-black/5" id="divisions">
       <div className="space-y-2">
@@ -360,8 +335,8 @@ function DivisionsSection({ onContact }) {
             <div className="text-xs font-bold text-[#CFA252]">{item.num}</div>
             <h3 className="text-xl font-serif font-bold text-[#1A0B22]">{item.title}</h3>
             <p className="text-sm text-[#1A0B22]/70 leading-relaxed">{item.description}</p>
-            <button onClick={onContact} className="inline-flex items-center gap-1 text-xs font-bold text-[#5E1A6E] hover:underline pt-2">
-              Learn more &rarr;
+            <button onClick={() => onSelectService(item)} className="inline-flex items-center gap-1 text-xs font-bold text-[#5E1A6E] hover:underline pt-2">
+              View services &rarr;
             </button>
           </div>
         ))}
@@ -580,6 +555,33 @@ function ContactModal({ onClose }) {
             Send Inquiry via WhatsApp
           </button>
         </form>
+      </div>
+    </div>
+  )
+}
+
+function ServiceModal({ service, onClose, onContact }) {
+  return (
+    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 p-4 backdrop-blur-md" onMouseDown={(event) => event.target === event.currentTarget && onClose()}>
+      <div className="relative w-full max-w-lg rounded-2xl bg-[#FAF8F5] p-7 text-[#1A0B22] shadow-2xl sm:p-9">
+        <button className="absolute right-5 top-5 rounded-full p-2 text-black/55 hover:bg-black/5 hover:text-black" onClick={onClose} aria-label="Close service details">
+          <X size={20} />
+        </button>
+        <div className="pr-10">
+          <div className="text-xs font-bold tracking-widest text-[#CFA252] uppercase">Service {service.num}</div>
+          <h2 className="mt-2 text-3xl font-serif font-bold text-[#1A0B22]">{service.title}</h2>
+          <p className="mt-3 text-sm leading-relaxed text-[#1A0B22]/70">{service.description}</p>
+        </div>
+        <div className="mt-7 border-t border-black/10 pt-5">
+          <h3 className="text-xs font-bold tracking-widest text-[#5E1A6E] uppercase">What we can help with</h3>
+          <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+            {service.offerings.map((offering) => <li key={offering} className="flex items-start gap-2 text-sm text-[#1A0B22]/80"><span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#CFA252]" />{offering}</li>)}
+          </ul>
+        </div>
+        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <button className="rounded-full bg-[#5E1A6E] px-6 py-3 text-sm font-bold text-white transition-all hover:bg-[#7A238E]" onClick={() => { onClose(); onContact() }}>Discuss this service</button>
+          <button className="rounded-full border border-black/15 px-6 py-3 text-sm font-bold text-[#1A0B22] hover:bg-black/5" onClick={onClose}>Close</button>
+        </div>
       </div>
     </div>
   )

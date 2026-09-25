@@ -1,8 +1,8 @@
 export const projects = [
-  { title: 'Becoming Her', subtitle: 'A Seat at the Table', category: 'Empowerment', number: '01', className: 'project-one', year: '2024', status: 'Impact event' },
-  { title: 'Atlantis 50th', subtitle: 'Anniversary Collaboration', category: 'Community', number: '02', className: 'project-two', year: '2024', status: 'Cultural platform' },
-  { title: 'Atlantis Art', subtitle: 'Exhibition', category: 'Culture', number: '03', className: 'project-three', year: '2023', status: 'Creative direction' },
-  { title: 'Mom & Me', subtitle: 'Wellness', category: 'Wellness', number: '04', className: 'project-four', year: '2023', status: 'Experience design' },
-  { title: 'Pink Lens', subtitle: 'Edit', category: 'Creative', number: '05', className: 'project-five', year: '2023', status: 'Visual identity' },
-  { title: 'GlamHubStudio', subtitle: 'Client Projects', category: 'Brand world', number: '06', className: 'project-six', year: 'Ongoing', status: 'Studio system' },
+  { title: 'Becoming Her', subtitle: 'A Seat at the Table', category: 'Empowerment', number: '01', className: 'project-one', year: '2024', status: 'Impact event', image: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=1400&q=85' },
+  { title: 'Atlantis 50th', subtitle: 'Anniversary Collaboration', category: 'Community', number: '02', className: 'project-two', year: '2024', status: 'Cultural platform', image: 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=1400&q=85' },
+  { title: 'Atlantis Art', subtitle: 'Exhibition', category: 'Culture', number: '03', className: 'project-three', year: '2023', status: 'Creative direction', image: 'https://images.unsplash.com/photo-1561214115-f2f134cc4912?auto=format&fit=crop&w=1400&q=85' },
+  { title: 'Mom & Me', subtitle: 'Wellness', category: 'Wellness', number: '04', className: 'project-four', year: '2023', status: 'Experience design', image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=1400&q=85' },
+  { title: 'Pink Lens', subtitle: 'Edit', category: 'Creative', number: '05', className: 'project-five', year: '2023', status: 'Visual identity', image: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1400&q=85' },
+  { title: 'GlamHubStudio', subtitle: 'Client Projects', category: 'Brand world', number: '06', className: 'project-six', year: 'Ongoing', status: 'Studio system', image: 'https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=1400&q=85' },
 ]
