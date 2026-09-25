@@ -13,6 +13,7 @@ import {
 import logoUrl from '../glamhublogo.jpeg'
 import ProjectsPage from './ProjectsPage.jsx'
 import ContactPage from './ContactPage.jsx'
+import EventChatbot from './EventChatbot.jsx'
 import sliderImage1 from '../Slider-image1.png'
 import sliderImage2 from '../Silder-image2.png'
 import sliderImage3 from '../Silder-image3.jpeg'
@@ -128,6 +129,8 @@ function App() {
                 <MessageCircle size={18} />
                 <span>WhatsApp</span>
               </a>
+
+              <EventChatbot />
 
               {modalOpen && <ContactModal onClose={() => setModalOpen(false)} />}
               {selectedService && <ServiceModal service={selectedService} onClose={() => setSelectedService(null)} onContact={openContact} />}
